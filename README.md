@@ -10,6 +10,14 @@ Install a current stable Rust toolchain, then run in an interactive terminal:
 cargo run
 ```
 
+From the repository root, you can also use these scripts (they can be invoked by absolute path from elsewhere):
+
+```sh
+./bin/build.sh               # build (extra Cargo build flags are forwarded)
+./bin/run.sh                 # run the TUI (app arguments are forwarded)
+./bin/run.sh --keymap /path/to/keymap.toml
+```
+
 Both panes start in the current working directory. Navigation does not modify files.
 
 | Key | Action |
@@ -38,5 +46,7 @@ cargo fmt --check
 cargo test
 cargo clippy --all-targets -- -D warnings
 ```
+
+To publish committed changes, run `./bin/publish.sh`. It requires a clean working tree, builds and tests with the stable Rust toolchain, then pushes the current branch to its configured upstream. It stops without pushing if the build or tests fail. Commit any changes (including new files) before running it; the script does not stage or create commits.
 
 Contributions and issues are welcome. Licensed under MIT.
