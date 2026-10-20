@@ -7,8 +7,9 @@ use ratatui::{
 };
 
 use crate::app::App;
+use crate::keymap::{Action, Keymap};
 
-pub fn render(frame: &mut Frame, app: &mut App) {
+pub fn render(frame: &mut Frame, app: &mut App, keymap: &Keymap) {
     let rows = Layout::default()
         .direction(Direction::Vertical)
         .constraints([Constraint::Min(1), Constraint::Length(1)])
@@ -59,9 +60,16 @@ pub fn render(frame: &mut Frame, app: &mut App) {
     }
 
     frame.render_widget(
-        Paragraph::new(Line::from(
-            " Tab: switch  ↑/↓ or j/k: move  Enter: open  Backspace: up  r: refresh  q: quit ",
-        )),
+        Paragraph::new(Line::from(format!(
+            " {}: switch  {} / {}: move  {}: open  {}: parent  {}: refresh  {}: quit ",
+            keymap.label(Action::SwitchPane),
+            keymap.label(Action::Up),
+            keymap.label(Action::Down),
+            keymap.label(Action::Open),
+            keymap.label(Action::Parent),
+            keymap.label(Action::Refresh),
+            keymap.label(Action::Quit),
+        ))),
         rows[1],
     );
 }

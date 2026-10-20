@@ -1,0 +1,33 @@
+# RuCommander keymap. Copy to ~/.config/rucommander/keymap.toml and edit.
+# Bindings under [bindings] are active. Replace any action's array to override it.
+# Key names: F1..F12, Up, Down, Left, Right, Enter, Backspace, Tab, Esc,
+# a single character (e.g. q), or Ctrl+/Alt+/Shift+ followed by a key name.
+# Modifier names are case-insensitive; Ctrl+R and ctrl+r are equivalent.
+# Some macOS terminals reserve function keys or Alt combinations; configure the
+# terminal to send them or choose a different key here.
+
+[bindings]
+quit = ["F10", "q", "Esc"]
+switch_pane = ["Tab"]
+up = ["Up", "k"]
+down = ["Down", "j"]
+open = ["Enter", "Right", "l"]
+parent = ["Backspace", "Left", "h"]
+refresh = ["Ctrl+R", "r"]
+
+# Norton Commander DOS function-key reference (planned, inactive actions).
+# These are documented for future features; they do not modify files yet.
+[planned]
+help = ["F1"]
+user_menu = ["F2"]
+view = ["F3"]
+edit = ["F4"]
+copy = ["F5"]
+move = ["F6"]
+make_directory = ["F7"]
+delete = ["F8"]
+menu = ["F9"]
+select = ["Insert"]
+rename = ["Shift+F6"]
+left_drive = ["Alt+F1"]
+right_drive = ["Alt+F2"]

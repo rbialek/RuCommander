@@ -5,7 +5,8 @@ use std::{
 };
 
 use anyhow::{Context, Result};
-use crossterm::event::KeyCode;
+
+use crate::keymap::Action;
 
 pub struct Entry {
     pub name: String,
@@ -105,21 +106,20 @@ impl App {
         })
     }
 
-    pub fn handle_key(&mut self, key: KeyCode) -> Result<bool> {
+    pub fn handle_action(&mut self, action: Action) -> Result<bool> {
         let pane = &mut self.panes[self.active];
-        match key {
-            KeyCode::Char('q') | KeyCode::Esc => return Ok(true),
-            KeyCode::Tab => self.active = 1 - self.active,
-            KeyCode::Up | KeyCode::Char('k') => {
+        match action {
+            Action::Quit => return Ok(true),
+            Action::SwitchPane => self.active = 1 - self.active,
+            Action::Up => {
                 pane.selected = pane.selected.saturating_sub(1);
             }
-            KeyCode::Down | KeyCode::Char('j') => {
+            Action::Down => {
                 pane.selected = (pane.selected + 1).min(pane.entries.len().saturating_sub(1));
             }
-            KeyCode::Enter | KeyCode::Right | KeyCode::Char('l') => pane.enter()?,
-            KeyCode::Backspace | KeyCode::Left | KeyCode::Char('h') => pane.parent()?,
-            KeyCode::Char('r') => pane.refresh()?,
-            _ => {}
+            Action::Open => pane.enter()?,
+            Action::Parent => pane.parent()?,
+            Action::Refresh => pane.refresh()?,
         }
         Ok(false)
     }

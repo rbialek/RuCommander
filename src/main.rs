@@ -1,7 +1,11 @@
 mod app;
+mod keymap;
 mod ui;
 
-use std::io::{self, Stdout};
+use std::{
+    io::{self, Stdout},
+    path::PathBuf,
+};
 
 use anyhow::Result;
 use crossterm::{
@@ -12,6 +16,7 @@ use crossterm::{
 use ratatui::{backend::CrosstermBackend, Terminal};
 
 use app::App;
+use keymap::Keymap;
 
 struct TerminalSession {
     terminal: Terminal<CrosstermBackend<Stdout>>,
@@ -45,14 +50,34 @@ impl Drop for TerminalSession {
 }
 
 fn main() -> Result<()> {
+    let mut args = std::env::args_os().skip(1);
+    let config_path = match args.next() {
+        Some(flag) if flag == "--keymap" => {
+            Some(PathBuf::from(args.next().ok_or_else(|| {
+                anyhow::anyhow!("--keymap requires a path")
+            })?))
+        }
+        Some(_) => anyhow::bail!("usage: rucommander [--keymap PATH]"),
+        None => None,
+    };
+    if args.next().is_some() {
+        anyhow::bail!("usage: rucommander [--keymap PATH]");
+    }
+    let keymap = Keymap::load(config_path.as_deref())?;
     let mut app = App::new()?;
     let mut session = TerminalSession::start()?;
 
     loop {
-        session.terminal.draw(|frame| ui::render(frame, &mut app))?;
+        session
+            .terminal
+            .draw(|frame| ui::render(frame, &mut app, &keymap))?;
         if let Event::Key(key) = event::read()? {
-            if key.kind == KeyEventKind::Press && app.handle_key(key.code)? {
-                break;
+            if key.kind == KeyEventKind::Press {
+                if let Some(action) = keymap.action(key) {
+                    if app.handle_action(action)? {
+                        break;
+                    }
+                }
             }
         }
     }

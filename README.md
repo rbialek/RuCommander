@@ -19,9 +19,17 @@ Both panes start in the current working directory. Navigation does not modify fi
 | `Enter` / `→` / `l` | Enter selected directory |
 | `Backspace` / `←` / `h` | Go to parent directory |
 | `r` | Refresh active pane |
-| `q` / `Esc` | Quit |
+| `F10` / `q` / `Esc` | Quit |
 
 Directories appear before files; symlinks are displayed with `@` and are not traversed yet. For scope, milestones, and platform plans, see [the PRD](spec/prd.md).
+
+## Keymap
+
+The editable [Norton Commander–inspired keymap](config/keymap.toml) is bundled with the app (edits to the bundled file require rebuilding). To customize an installed binary without rebuilding, copy it to `~/.config/rucommander/keymap.toml` (create the directory first) and change the arrays under `[bindings]`. The app loads that file on startup, replacing only the actions you specify; there is no automatic write to your home directory. Alternatively, use `cargo run -- --keymap /path/to/keymap.toml` to load an explicit file. An explicit missing or malformed file produces an error before the TUI opens. Duplicate active shortcuts are rejected.
+
+The `[planned]` section records the classic F1–F9 actions (Help, User menu, View, Edit, Copy, Move, Make directory, Delete, Menu) plus selection and panel-drive keys; those commands are **not implemented yet** and the entries do not bind any keys. `F10` quits now. Terminals on macOS may intercept function keys or Alt combinations; configure the terminal to pass them through or customize the binding.
+
+References: [Norton Commander history and original function-key layout](https://www.softpanorama.org/OFM/Paradigm/Ch03/norton_commander.shtml), [orthodox file-manager function keys](https://en.wikipedia.org/wiki/File_manager#Orthodox_file_managers), and [Norton Commander F3/F4 viewer/editor](https://en.wikipedia.org/wiki/Norton_Commander). This is a practical terminal adaptation, not an exact transcription of every DOS-version shortcut.
 
 ## Development
 

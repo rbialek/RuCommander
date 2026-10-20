@@ -58,6 +58,7 @@ Developers and terminal users need a fast way to browse and manage files in two 
 - Rust 2021, Ratatui for rendering, Crossterm for terminal input and raw/alternate-screen control.
 - Split state/navigation (`src/app.rs`), rendering (`src/ui.rs`), and terminal lifecycle (`src/main.rs`). Introduce separate filesystem operation and platform modules as functionality grows.
 - macOS is the initial development/test target; prefer portable standard-library filesystem APIs and isolate OS-specific features. Validate Linux and Windows builds and behavior before declaring support.
+- Keep the Norton Commander–inspired shortcuts in an editable TOML keymap (`config/keymap.toml`) with optional per-user overrides; distinguish live navigation shortcuts from planned file-operation shortcuts until those operations are implemented.
 - Add automated tests for navigation, sorting, conflicts, and recursive operations as those features are built; use CI for formatting, Clippy, and tests.
 
 ## Milestones and acceptance criteria
