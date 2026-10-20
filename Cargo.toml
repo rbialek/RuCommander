@@ -1,0 +1,12 @@
+[package]
+name = "rucommander"
+version = "0.1.0"
+edition = "2021"
+description = "A two-pane terminal file manager inspired by Norton Commander"
+license = "MIT"
+repository = "https://github.com/rbialek/RuCommander"
+
+[dependencies]
+anyhow = "1"
+crossterm = "0.28"
+ratatui = "0.29"
